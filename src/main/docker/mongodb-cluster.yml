@@ -1,0 +1,17 @@
+version: '2'
+services:
+    expenses-mongodb:
+        container_name: expenses-mongodb
+        image: mongo:3.3.5
+        ports:
+            - "27017:27017"
+        command: mongos --configdb expenses-mongodb-config
+    expenses-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    expenses-mongodb-config:
+        image: mongo:3.3.5
+        container_name: expenses-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db

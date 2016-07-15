@@ -1,0 +1,44 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.4.2",
+    "baseName": "expenses",
+    "packageName": "com.api.expenses",
+    "packageFolder": "com/api/expenses",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "spring-websocket",
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "enableSocialSignIn": true,
+    "jwtSecretKey": "fe2b562d4311f8042f3a102aa2f3089cd1d797d5",
+    "useSass": false,
+    "applicationType": "monolith",
+    "testFrameworks": [
+      "gatling"
+    ],
+    "jhiPrefix": "jhi",
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en",
+      "cs",
+      "da",
+      "nl",
+      "fr",
+      "de",
+      "hu",
+      "it",
+      "ro",
+      "ru",
+      "sk",
+      "es",
+      "sv",
+      "tr"
+    ]
+  }
+}
