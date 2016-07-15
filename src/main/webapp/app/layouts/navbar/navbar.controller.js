@@ -13,16 +13,27 @@
         vm.isNavbarCollapsed = true;
         vm.isAuthenticated = Principal.isAuthenticated;
 
-        ProfileService.getProfileInfo().then(function(response) {
-            vm.inProduction = response.inProduction;
-            vm.swaggerDisabled = response.swaggerDisabled;
-        });
 
+        vm.init = init;
         vm.login = login;
         vm.logout = logout;
+        vm.account = null;
         vm.toggleNavbar = toggleNavbar;
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
+
+        init();
+
+        function init() {
+            ProfileService.getProfileInfo().then(function(response) {
+                vm.inProduction = response.inProduction;
+                vm.swaggerDisabled = response.swaggerDisabled;
+            });
+
+            Principal.identity().then(function(account) {
+                vm.account = account;
+            });
+        }
 
         function login() {
             collapseNavbar();
