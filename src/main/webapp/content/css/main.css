@@ -374,3 +374,7 @@ Social Buttons
 .active {
     background-color: #F57F17;
 }
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #F57F17 !important;
+}
