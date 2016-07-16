@@ -1,7 +1,7 @@
 <div class="ex" ng-cloak>
     <div class="row">
             <div ng-switch="vm.isAuthenticated()">
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
@@ -10,10 +10,13 @@
                         </md-card-title>
                         <md-card-content>
                             <div class="col-md-12">
-                                <div class="col-md-3 ex-last-items-container" ng-repeat = "item in items">
+                                <div class="col-md-3 ex-last-items-container fade-in" ng-class = "progressiveFadeIn($index)" ng-repeat = "item in items">
                                     <span class="label label-success ex-last-items-title">{{item.dayOfWeek}}</span>
                                     <div class="ex-last-items">
-                                        <div ng-repeat="expense in item.expenses">{{expense.category}} - {{expense.price}} RON</div>
+                                        <div ng-repeat="expense in item.expenses">
+                                            <img src="/content/images/right.svg">
+                                            <span>{{expense.category}} - {{expense.price}} RON</span>
+                                        </div>
                                     </div>
                                     <div class="col-md-12">
                                         <md-button>Details</md-button>

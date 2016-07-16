@@ -14,9 +14,13 @@
         vm.isAuthenticated = null;
         vm.login = LoginService.open;
         vm.register = register;
+        vm.fadeInClasses = ['one','two','three'];
+        $scope.progressiveFadeIn = progressiveFadeIn;
         $scope.$on('authenticationSuccess', function() {
             getAccount();
         });
+
+        getAccount();
 
         $scope.items = [{
             dayOfWeek: 'Wednesday',
@@ -26,6 +30,12 @@
             },{
                 category: 'CLOTHES',
                 price: 170
+            },{
+                category: 'BILLS',
+                price: 220
+            }, {
+                category: 'HOUSE',
+                price: 5500
             }]
         }, {
             dayOfWeek: 'Thursday',
@@ -41,7 +51,10 @@
             }]
         }];
 
-        getAccount();
+
+        function progressiveFadeIn(index) {
+            return vm.fadeInClasses[index % vm.fadeInClasses.length];
+        }
 
         function getAccount() {
             Principal.identity().then(function(account) {
