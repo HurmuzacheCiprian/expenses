@@ -378,3 +378,38 @@ Social Buttons
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
     background-color: #F57F17 !important;
 }
+
+.ex .md-button.md-fab {
+    z-index: 20;
+    line-height: 35px;
+    min-width: 0;
+    width: 35px;
+    height: 35px;
+}
+
+.ex-last-items-title {
+    font-family: 'Montserrat';
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.ex-last-items-container {
+    margin-top: 20px;
+    border: 1px solid #BDBDBD;
+    margin-left: 15px;
+    padding: 20px;
+}
+
+.ex-last-items {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.ex-last-items > div {
+    font-family: 'Sans-serif';
+    font-size: 14px;
+}
+
+.ex .label {
+    background-color: #009688;
+}

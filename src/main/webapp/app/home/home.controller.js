@@ -18,6 +18,29 @@
             getAccount();
         });
 
+        $scope.items = [{
+            dayOfWeek: 'Wednesday',
+            expenses: [{
+                category: 'FOOD',
+                price: 50
+            },{
+                category: 'CLOTHES',
+                price: 170
+            }]
+        }, {
+            dayOfWeek: 'Thursday',
+            expenses: [{
+                category: 'CAR',
+                price: 100
+            }]
+        }, {
+            dayOfWeek: 'Friday',
+            expenses: [{
+                category: 'TECH',
+                price: 3600
+            }]
+        }];
+
         getAccount();
 
         function getAccount() {
