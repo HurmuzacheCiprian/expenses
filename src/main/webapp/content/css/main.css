@@ -451,3 +451,64 @@ Social Buttons
   -moz-animation-delay: 1.1s;
   animation-delay: 1.1s;
 }
+
+.ex-expenses {
+    margin-top: 10px;
+    margin-left: 3px;
+    padding: 3px;
+    text-align: center;
+}
+
+.ex-total-expenses {
+    margin-top: 50px;
+}
+
+.ex-total-expenses .label {
+    font-size: 14px;
+    font-family: 'Sans serif';
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+  background-color: #FF5722;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.color-one {
+    background-color: #E040FB;
+    border: 1px solid #E040FB;
+}
+.color-two {
+    background-color: #9575CD;
+    border: 1px solid #9575CD;
+}
+.color-three {
+    background-color: #3D5AFE;
+    border: 1px solid #3D5AFE;
+}
+.color-four {
+    background-color: #9C27B0;
+    border: 1px solid #9C27B0;
+}
+.color-five {
+    background-color: #43A047;
+    border: 1px solid #43A047;
+}
+.color-six {
+    background-color: #795548;
+    border: 1px solid #795548;
+}
+
+.color-seven {
+    background-color: #0091EA;
+    border: 1px solid #0091EA;
+}
+
+.color-eight {
+    background-color: #FF5722;
+    border: 1px solid #FF5722;
+}
