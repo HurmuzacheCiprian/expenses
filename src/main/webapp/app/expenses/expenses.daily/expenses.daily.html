@@ -8,7 +8,7 @@
                             <span class="md-headline">Your daily expenses for {{today}}</span>
                         </md-card-title-text>
                     </md-card-title>
-                    <md-card-content>
+                    <md-card-content ng-if="!emptyExpense">
                         <div class="col-md-12">
                             <div class="col-md-5 ex-expenses" ng-repeat="exp in expenses">
                                 <div class="col-md-2">
@@ -23,6 +23,11 @@
                         <div class="col-md-12 ex-total-expenses">
                             <span class="label label-primary">Total {{totalExpenses}} RON</span>
                             {{message}}
+                        </div>
+                    </md-card-content>
+                    <md-card-content ng-if="emptyExpense">
+                        <div class="col-md-12">
+                            <span class="label label-info">No expense found for today.</span>
                         </div>
                     </md-card-content>
                 </md-card>

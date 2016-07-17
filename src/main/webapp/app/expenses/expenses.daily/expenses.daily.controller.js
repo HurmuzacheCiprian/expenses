@@ -12,6 +12,7 @@
         $scope.colors = ['color-one','color-two','color-three','color-four','color-five','color-six','color-seven','color-eight'];
         $scope.categories = [];
         $scope.expense = {};
+        $scope.emptyExpense = false;
         $scope.limit = {};
         $scope.colorIcon = colorIcon;
         $scope.register = register;
@@ -36,6 +37,9 @@
                 .then(function(data) {
                     $scope.today = data.data.date;
                     $scope.expenses = data.data.expenses;
+                    if(angular.isUndefined(data.data.expenses) || data.data.expenses.length == 0) {
+                        $scope.emptyExpense = true;
+                    }
                     $scope.totalExpenses = data.data.totalAmount;
                 }, function(error) {
 
