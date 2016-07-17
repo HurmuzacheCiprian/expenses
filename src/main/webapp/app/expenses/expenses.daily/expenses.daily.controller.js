@@ -12,10 +12,12 @@
         $scope.colors = ['color-one','color-two','color-three','color-four','color-five','color-six','color-seven','color-eight'];
         $scope.categories = [];
         $scope.expense = {};
+        $scope.limit = {};
         $scope.colorIcon = colorIcon;
         $scope.register = register;
         $scope.expenses = [];
         $scope.totalExpenses = null;
+        $scope.registerLimit = registerLimit;
         $scope.remove = remove;
         $scope.message = "Ordonate dup pret descrescator si grupate dupa categorie";
         var vm = this;
@@ -55,6 +57,10 @@
                     $scope.successMessage = undefined;
                     $scope.errorMessage = 'Error while saving the expense. Please try again later!';
                 });
+
+        }
+
+        function registerLimit() {
 
         }
 

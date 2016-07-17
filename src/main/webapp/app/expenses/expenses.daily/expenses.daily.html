@@ -1,6 +1,6 @@
 <div ng-cloak>
     <div class="row">
-        <div >
+        <div>
             <div class="col-md-10">
                 <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                     <md-card-title>
@@ -71,6 +71,34 @@
                         </div>
                         <div class="col-md-12" ng-if="errorMessage">
                             <span class="label label-dange">{{errorMessage}}</span>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div class="col-md-10">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">Register new daily expense limit</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <div class="col-md-3">
+                            <md-input-container style="width:100%;">
+                                <label>Limit name</label>
+                                <input input md-maxlength="30" required md-no-asterisk name="name" ng-model="limit.name">
+                            </md-input-container>
+                        </div>
+
+                        <div class="col-md-3">
+                            <md-input-container style="width:100%;">
+                                <label>Limit amount</label>
+                                <input input md-maxlength="30" required md-no-asterisk name="amount" ng-model="limit.amount">
+                            </md-input-container>
+                        </div>
+
+                        <div class="col-md-12">
+                            <md-button ng-click="registerLimit()">Register</md-button>
                         </div>
                     </md-card-content>
                 </md-card>
