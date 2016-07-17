@@ -10,7 +10,7 @@ import javax.persistence.Column;
 @Getter
 @Setter
 @Document(collection = "expense")
-public class Expense extends AbstractAuditingEntity{
+public class Expense {
 
     @Column(name = "_id")
     public String id;
@@ -29,5 +29,8 @@ public class Expense extends AbstractAuditingEntity{
 
     @Column(name = "user_id")
     private String userId;
+
+    @Column(name = "created_date")
+    private String createdDate;
 
 }

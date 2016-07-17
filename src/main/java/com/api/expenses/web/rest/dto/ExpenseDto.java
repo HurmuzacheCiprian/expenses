@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExpenseDto {
+    private String id;
     private String name;
     private String description;
     private Long amount;

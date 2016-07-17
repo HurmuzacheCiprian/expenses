@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DailyExpensesDto {
+    private String date;
     private List<ExpenseDto> expenses;
     private Long totalAmount;
 }

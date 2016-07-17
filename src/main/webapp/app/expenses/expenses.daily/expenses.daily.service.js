@@ -9,7 +9,23 @@
     function ExpensesDailyService($http) {
         return {
             register: register,
-            getCategories: getCategories
+            getCategories: getCategories,
+            getExpenses: getExpenses,
+            remove: remove
+        }
+
+        function remove(expenseId) {
+            return $http({
+                url: '/expenses?expenseId='+expenseId,
+                method: 'DELETE',
+            });
+        }
+
+        function getExpenses() {
+            return $http({
+                url: '/expenses',
+                method: 'GET'
+            });
         }
 
         function register(data) {

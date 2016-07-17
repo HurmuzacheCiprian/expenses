@@ -8,35 +8,20 @@
     ExpensesDailyController.$inject = ['$scope','ExpensesDailyService'];
 
     function ExpensesDailyController($scope,ExpensesDailyService) {
-        $scope.today = new Date();
+        $scope.today = null;
         $scope.colors = ['color-one','color-two','color-three','color-four','color-five','color-six','color-seven','color-eight'];
         $scope.categories = [];
         $scope.expense = {};
         $scope.colorIcon = colorIcon;
         $scope.register = register;
-        $scope.expenses = [{
-            category: 'FOOD',
-            amount: 84
-        }, {
-            category: 'SPORTS',
-            amount: 500
-        }, {
-            category: 'CAR',
-            amount: 150
-        }, {
-            category: 'BILLS',
-            amount: 250
-        }, {
-            category: 'FOOD',
-            amount: 100
-        }, {
-            category: 'HOLIDAY',
-            amount: 750
-        }];
-        $scope.totalExpenses = 5500;
+        $scope.expenses = [];
+        $scope.totalExpenses = null;
+        $scope.remove = remove;
         $scope.message = "Ordonate dup pret descrescator si grupate dupa categorie";
+        var vm = this;
+        vm.init = init;
 
-        init();
+        vm.init();
 
         function init() {
             ExpensesDailyService.getCategories()
@@ -44,6 +29,14 @@
                     $scope.categories = data.data;
                 }, function(error) {
                     $scope.categories = [];
+                });
+            ExpensesDailyService.getExpenses()
+                .then(function(data) {
+                    $scope.today = data.data.date;
+                    $scope.expenses = data.data.expenses;
+                    $scope.totalExpenses = data.data.totalAmount;
+                }, function(error) {
+
                 });
         }
 
@@ -56,12 +49,20 @@
                 .then(function(data) {
                     $scope.successMessage = 'Expense saved!';
                     $scope.errorMessage = undefined;
-                    $sope.expense = {};
+                    $scope.expense = {name: '', description: ''};
+                    vm.init();
                 }, function(error) {
                     $scope.successMessage = undefined;
                     $scope.errorMessage = 'Error while saving the expense. Please try again later!';
                 });
 
+        }
+
+        function remove(expense) {
+            ExpensesDailyService.remove(expense.id)
+                .then(function(data) {
+                    vm.init();
+                })
         }
     }
 
