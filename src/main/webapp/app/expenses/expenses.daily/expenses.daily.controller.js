@@ -5,12 +5,12 @@
         .module('expensesApp')
         .controller('ExpensesDailyController',ExpensesDailyController);
 
-    ExpensesDailyController.$inject = ['$scope'];
+    ExpensesDailyController.$inject = ['$scope','ExpensesDailyService'];
 
-    function ExpensesDailyController($scope) {
+    function ExpensesDailyController($scope,ExpensesDailyService) {
         $scope.today = new Date();
         $scope.colors = ['color-one','color-two','color-three','color-four','color-five','color-six','color-seven','color-eight'];
-        $scope.categories = ['FOOD', 'SHOPPING', 'CAR', 'BILLS'];
+        $scope.categories = [];
         $scope.expense = {};
         $scope.colorIcon = colorIcon;
         $scope.register = register;
@@ -36,12 +36,32 @@
         $scope.totalExpenses = 5500;
         $scope.message = "Ordonate dup pret descrescator si grupate dupa categorie";
 
+        init();
+
+        function init() {
+            ExpensesDailyService.getCategories()
+                .then(function(data) {
+                    $scope.categories = data.data;
+                }, function(error) {
+                    $scope.categories = [];
+                });
+        }
+
         function colorIcon(index) {
             return $scope.colors[index%$scope.colors.length];
         }
 
         function register() {
-            console.log($scope.expense);
+            ExpensesDailyService.register($scope.expense)
+                .then(function(data) {
+                    $scope.successMessage = 'Expense saved!';
+                    $scope.errorMessage = undefined;
+                    $sope.expense = {};
+                }, function(error) {
+                    $scope.successMessage = undefined;
+                    $scope.errorMessage = 'Error while saving the expense. Please try again later!';
+                });
+
         }
     }
 

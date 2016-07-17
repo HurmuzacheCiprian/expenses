@@ -37,7 +37,7 @@
                         <div class="col-md-3">
                             <md-input-container style="width:100%;">
                                 <label>Name</label>
-                                <input input md-maxlength="30" required md-no-asterisk name="description" ng-model="expense.name">
+                                <input input md-maxlength="30" required md-no-asterisk name="name" ng-model="expense.name">
                             </md-input-container>
                         </div>
                         <div class="col-md-3">
@@ -49,7 +49,7 @@
                         <div class="col-md-3">
                             <md-input-container style="width:100%;">
                                 <label>Amount</label>
-                                <input input md-maxlength="30" required md-no-asterisk name="description" ng-model="expense.amount">
+                                <input input md-maxlength="30" required md-no-asterisk name="amount" ng-model="expense.amount">
                             </md-input-container>
                         </div>
                         <div class="col-md-3">
@@ -64,6 +64,12 @@
                         </div>
                         <div class="col-md-12">
                             <md-button ng-click="register()">Register</md-button>
+                        </div>
+                        <div class="col-md-12" ng-if="successMessage">
+                            <span class="label label-success">{{successMessage}}</span>
+                        </div>
+                        <div class="col-md-12" ng-if="errorMessage">
+                            <span class="label label-dange">{{errorMessage}}</span>
                         </div>
                     </md-card-content>
                 </md-card>
