@@ -9,5 +9,5 @@ import java.util.List;
  * Created by roxana on 17.07.2016.
  */
 public interface ExpenseRepository extends MongoRepository<Expense, String> {
-    List<Expense> findByCreatedDateOrderByAmountDesc(String date);
+    List<Expense> findByCreatedDateAndUserIdOrderByAmountDesc(String date, String userId);
 }

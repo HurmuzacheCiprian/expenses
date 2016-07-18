@@ -30,8 +30,13 @@ public class ExpenseService {
     private UserService userService;
 
     public DailyExpensesDto getDailyExpenses() {
+        String userName = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
+        if (!user.isPresent()) {
+            throw new RuntimeException("User is not logged in");
+        }
         String now = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        List<Expense> expenses = expenseRepository.findByCreatedDateOrderByAmountDesc(now);
+        List<Expense> expenses = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(now, user.get().getId());
 
         return getDailyExpensesDto(now, expenses);
     }
@@ -53,15 +58,20 @@ public class ExpenseService {
     }
 
     public ThreeDaysExpensesDto getLastThreeDaysExpenses() {
+        String userName = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
+        if (!user.isPresent()) {
+            throw new RuntimeException("User is not logged in");
+        }
         ZonedDateTime now = ZonedDateTime.now();
         String day_3 = now.minusDays(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String day_2 = now.minusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String day_1 = now.minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         ThreeDaysExpensesDto response = new ThreeDaysExpensesDto();
 
-        List<Expense> expenses_day_3 = expenseRepository.findByCreatedDateOrderByAmountDesc(day_3);
-        List<Expense> expenses_day_2 = expenseRepository.findByCreatedDateOrderByAmountDesc(day_2);
-        List<Expense> expenses_day_1 = expenseRepository.findByCreatedDateOrderByAmountDesc(day_1);
+        List<Expense> expenses_day_3 = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(day_3, user.get().getId());
+        List<Expense> expenses_day_2 = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(day_2, user.get().getId());
+        List<Expense> expenses_day_1 = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(day_1, user.get().getId());
 
         DailyExpensesDto dto_day_3 = getDailyExpensesDto(day_3, expenses_day_3);
         DailyExpensesDto dto_day_2 = getDailyExpensesDto(day_2, expenses_day_2);
