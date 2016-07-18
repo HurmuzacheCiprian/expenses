@@ -17,6 +17,9 @@
         vm.fadeInClasses = ['one','two','three'];
         $scope.items = [];
         $scope.details = details;
+        $scope.fund = {};
+        $scope.funds = [];
+        $scope.registerFund = registerFund;
         $scope.progressiveFadeIn = progressiveFadeIn;
         $scope.$on('authenticationSuccess', function() {
             getAccount();
@@ -36,6 +39,10 @@
         }
 
         function details(item) {
+
+        }
+
+        function registerFund() {
 
         }
 
