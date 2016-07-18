@@ -15,7 +15,6 @@
             removeFund: removeFund,
             getAvailableFunds: getAvailableFunds
         }
-
         function getAvailableFunds() {
             return $http({
                 url: '/funds/available',
