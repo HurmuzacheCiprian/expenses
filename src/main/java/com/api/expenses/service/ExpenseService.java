@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +46,7 @@ public class ExpenseService {
         DailyExpensesDto response = new DailyExpensesDto();
         response.setDate(now);
         List<ExpenseDto> expenseDto = new ArrayList<>();
-        Long total = 0L;
+        Double total = 0D;
         for (Expense e : expenses) {
             ExpenseDto dto = ExpenseDto.builder().amount(e.getAmount()).category(e.getCategory().getCategoryName()).name(e.getName())
                 .description(e.getDescription()).id(e.getId()).build();
@@ -76,7 +77,7 @@ public class ExpenseService {
         DailyExpensesDto dto_day_3 = getDailyExpensesDto(day_3, expenses_day_3);
         DailyExpensesDto dto_day_2 = getDailyExpensesDto(day_2, expenses_day_2);
         DailyExpensesDto dto_day_1 = getDailyExpensesDto(day_1, expenses_day_1);
-        List<DailyExpensesDto> dailyExpenses = new ArrayList<>(3);
+        List<DailyExpensesDto> dailyExpenses = new LinkedList<>();
         dailyExpenses.add(dto_day_1);
         dailyExpenses.add(dto_day_2);
         dailyExpenses.add(dto_day_3);

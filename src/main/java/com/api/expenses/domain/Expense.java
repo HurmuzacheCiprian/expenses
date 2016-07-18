@@ -22,7 +22,7 @@ public class Expense {
     private String description;
 
     @Column(name = "amount")
-    private Long amount;
+    private Double amount;
 
     @Column(name = "category")
     private Category category;

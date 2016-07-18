@@ -17,6 +17,7 @@
         vm.fadeInClasses = ['one','two','three'];
         $scope.items = [];
         $scope.details = details;
+        $scope.removeFund = removeFund;
         $scope.fund = {};
         $scope.funds = [];
         $scope.registerFund = registerFund;
@@ -24,11 +25,15 @@
         $scope.$on('authenticationSuccess', function() {
             getAccount();
         });
+        var vm = this;
+        vm.init = init;
 
         getAccount();
-        init();
+        vm.init();
 
         function init() {
+            $scope.funds = [];
+            $scope.items = [];
             HomeService.getLastThreeDayExpenses()
                 .then(function(data) {
                     console.log(data.data);
@@ -36,6 +41,23 @@
                 }, function (error) {
                     console.log(error);
                 });
+
+            HomeService.getFunds()
+                    .then(function(data) {
+                        $scope.funds = data.data;
+                    });
+        }
+
+        function removeFund(fundId) {
+            HomeService.removeFund(fundId)
+                .then(function(data) {
+                    if(data.status === 200) {
+                        HomeService.getFunds()
+                             .then(function(data) {
+                                 $scope.funds = data.data;
+                             });
+                    }
+                })
         }
 
         function details(item) {
@@ -43,7 +65,16 @@
         }
 
         function registerFund() {
-
+            HomeService.saveFund($scope.fund)
+                .then(function (data) {
+                    if(data.status===200) {
+                        HomeService.getFunds()
+                            .then(function(data) {
+                               $scope.funds = data.data;
+                               $scope.fund = {};
+                             });
+                    }
+                });
         }
 
         function progressiveFadeIn(index) {

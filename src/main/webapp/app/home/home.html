@@ -16,7 +16,7 @@
                                 <div class="ex-last-items">
                                     <div ng-repeat="expense in item.expenses">
                                         <img src="/content/images/right.svg">
-                                        <span>{{expense.category}} - {{expense.price}} RON</span>
+                                        <span>{{expense.category}} - {{expense.amount}} RON</span>
                                     </div>
                                     <div ng-if="item.expenses.length === 0">
                                         <span class="label label-success">No expenses registered</span>
@@ -34,18 +34,16 @@
                 <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                     <md-card-title>
                         <md-card-title-text>
-                            <span class="md-headline">Available funds</span>
+                            <span class="md-headline">Registered monthly funds</span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content>
                         <div class="col-md-12">
-                            <div class="col-md-3 ex-last-items-container fade-in" ng-class="progressiveFadeIn($index)"
+                            <div class="col-md-3 fade-in" ng-class="progressiveFadeIn($index)"
                                  ng-repeat="item in funds">
-                                <span class="label label-success ex-last-items-title">{{item.fundName}}</span>
-                                <div class="ex-last-items">
-                                    <img src="/content/images/right.svg">
-                                    <span>{{item.amount}} RON</span>
-                                </div>
+                                <span class="label label-success">{{item.name}}</span>
+                                <span>{{item.amount}} RON</span>
+                                <i style="margin-left: 15px; cursor: pointer;" class="glyphicon glyphicon-remove" ng-click="removeFund(item.id)"></i>
                             </div>
                             <div class="col-md-6" ng-if="funds.length === 0">
                                 <span class="label label-success">No funds registered</span>

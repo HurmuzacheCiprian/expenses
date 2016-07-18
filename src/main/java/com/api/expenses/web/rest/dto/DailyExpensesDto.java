@@ -12,5 +12,5 @@ import java.util.List;
 public class DailyExpensesDto {
     private String date;
     private List<ExpenseDto> expenses;
-    private Long totalAmount;
+    private Double totalAmount;
 }
