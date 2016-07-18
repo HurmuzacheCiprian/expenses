@@ -18,14 +18,14 @@
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
             <li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true">
-                <a ui-sref="dailyExpenses" id="entity-menu">
+                <a ui-sref="dailyExpenses" ng-click="vm.collapseNavbar()" id="entity-menu">
                         <span>
                             <span class="hidden-sm" translate="global.menu.daily.expenses">
                                 Daily expenses
                             </span>
                         </span>
                 </a>
-                <a ui-sref="monthlyExpenses">
+                <a ui-sref="monthlyExpenses" ng-click="vm.collapseNavbar()">
                         <span>
                             <span class="hidden-sm" translate="global.menu.monthly.expenses">
                                 Monthly expenses
