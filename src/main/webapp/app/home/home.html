@@ -11,15 +11,18 @@
                         <md-card-content>
                             <div class="col-md-12">
                                 <div class="col-md-3 ex-last-items-container fade-in" ng-class = "progressiveFadeIn($index)" ng-repeat = "item in items">
-                                    <span class="label label-success ex-last-items-title">{{item.dayOfWeek}}</span>
+                                    <span class="label label-success ex-last-items-title">{{item.date}}</span>
                                     <div class="ex-last-items">
                                         <div ng-repeat="expense in item.expenses">
                                             <img src="/content/images/right.svg">
                                             <span>{{expense.category}} - {{expense.price}} RON</span>
                                         </div>
+                                        <div ng-if="item.expenses.length === 0">
+                                            <span class="label label-success">No expenses registered</span>
+                                        </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <md-button>Details</md-button>
+                                        <md-button ng-click="details(item)">Details</md-button>
                                     </div>
                                 </div>
                             </div>

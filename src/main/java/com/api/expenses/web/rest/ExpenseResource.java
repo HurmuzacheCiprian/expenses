@@ -3,6 +3,7 @@ package com.api.expenses.web.rest;
 import com.api.expenses.service.ExpenseService;
 import com.api.expenses.web.rest.dto.DailyExpensesDto;
 import com.api.expenses.web.rest.dto.ExpenseDto;
+import com.api.expenses.web.rest.dto.ThreeDaysExpensesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,12 @@ public class ExpenseResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DailyExpensesDto> getDailyExpenses() {
-
         return new ResponseEntity<>(expenseService.getDailyExpenses(), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/last-three-days")
+    public ResponseEntity<ThreeDaysExpensesDto> getLastThreeDaysExpenses() {
+        return new ResponseEntity<>(expenseService.getLastThreeDaysExpenses(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
