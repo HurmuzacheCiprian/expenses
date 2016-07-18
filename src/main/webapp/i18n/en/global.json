@@ -12,6 +12,9 @@
             "daily": {
               "expenses": "Daily expenses"
             },
+            "monthly": {
+                "expenses": "Monthly expenses"
+            },
             "account": {
                 "main": "Account",
                 "settings": "Settings",
