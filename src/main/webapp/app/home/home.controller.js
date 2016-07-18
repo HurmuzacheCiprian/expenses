@@ -46,18 +46,20 @@
                     .then(function(data) {
                         $scope.funds = data.data;
                     });
+            HomeService.getAvailableFunds()
+                .then(function (data) {
+                    $scope.availableFunds = data.data;
+                });
         }
 
         function removeFund(fundId) {
-            HomeService.removeFund(fundId)
-                .then(function(data) {
-                    if(data.status === 200) {
-                        HomeService.getFunds()
-                             .then(function(data) {
-                                 $scope.funds = data.data;
-                             });
-                    }
-                })
+            $scope.funds.forEach(function (data, index) {
+                if(data.id === fundId) {
+                    console.log(index);
+                    $scope.funds.splice(index,1);
+                }
+            });
+            HomeService.removeFund(fundId);
         }
 
         function details(item) {
@@ -71,7 +73,7 @@
                         HomeService.getFunds()
                             .then(function(data) {
                                $scope.funds = data.data;
-                               $scope.fund = {};
+                               $scope.fund = {name: '', amount: ''};
                              });
                     }
                 });

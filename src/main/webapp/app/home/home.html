@@ -34,16 +34,32 @@
                 <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                     <md-card-title>
                         <md-card-title-text>
+                            <span class="md-headline">Available monthly funds</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <span class="label label-success">{{availableFunds.name}}: {{availableFunds.amount}} RON</span>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div class="col-md-10">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
                             <span class="md-headline">Registered monthly funds</span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content>
                         <div class="col-md-12">
-                            <div class="col-md-3 fade-in" ng-class="progressiveFadeIn($index)"
-                                 ng-repeat="item in funds">
+                            <div class="col-md-3" ng-repeat="item in funds">
                                 <span class="label label-success">{{item.name}}</span>
                                 <span>{{item.amount}} RON</span>
-                                <i style="margin-left: 15px; cursor: pointer;" class="glyphicon glyphicon-remove" ng-click="removeFund(item.id)"></i>
+                                <i style="margin-left: 15px; cursor: pointer;" class="glyphicon glyphicon-remove"
+                                   ng-click="removeFund(item.id)"></i>
                             </div>
                             <div class="col-md-6" ng-if="funds.length === 0">
                                 <span class="label label-success">No funds registered</span>
@@ -64,13 +80,15 @@
                             <div class="col-md-3">
                                 <md-input-container style="width:100%;">
                                     <label>Name</label>
-                                    <input input md-maxlength="30" required md-no-asterisk name="name" ng-model="fund.name">
+                                    <input input md-maxlength="30" required md-no-asterisk name="name"
+                                           ng-model="fund.name">
                                 </md-input-container>
                             </div>
                             <div class="col-md-3">
                                 <md-input-container style="width:100%;">
                                     <label>Amount</label>
-                                    <input input md-maxlength="30" required md-no-asterisk name="amount" ng-model="fund.amount">
+                                    <input input md-maxlength="30" required md-no-asterisk name="amount"
+                                           ng-model="fund.amount">
                                 </md-input-container>
                             </div>
                             <div class="col-md-12">

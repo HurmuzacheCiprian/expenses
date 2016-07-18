@@ -12,7 +12,15 @@
             getLastThreeDayExpenses: getLastThreeDayExpenses,
             saveFund: saveFund,
             getFunds: getFunds,
-            removeFund: removeFund
+            removeFund: removeFund,
+            getAvailableFunds: getAvailableFunds
+        }
+
+        function getAvailableFunds() {
+            return $http({
+                url: '/funds/available',
+                method: 'GET'
+            });
         }
 
         function removeFund(fundId) {

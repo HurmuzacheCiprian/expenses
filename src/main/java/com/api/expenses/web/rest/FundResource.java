@@ -16,6 +16,11 @@ public class FundResource {
     @Autowired
     private FundService fundService;
 
+    @RequestMapping(method = RequestMethod.GET, value = "/available")
+    public ResponseEntity<FundDto> getAvailableFunds() {
+        return new ResponseEntity<>(fundService.getAvailableFunds(), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<FundDto>> getFunds() {
         return new ResponseEntity<>(fundService.getFunds(), HttpStatus.OK);
