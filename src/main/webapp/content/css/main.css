@@ -512,3 +512,9 @@ Social Buttons
     background-color: #FF5722;
     border: 1px solid #FF5722;
 }
+
+.ex .label {
+    font-size: 15px;
+    font-weight: 700;
+
+}
