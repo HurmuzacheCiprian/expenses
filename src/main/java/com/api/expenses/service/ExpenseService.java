@@ -4,19 +4,19 @@ import com.api.expenses.domain.Expense;
 import com.api.expenses.domain.User;
 import com.api.expenses.repository.ExpenseRepository;
 import com.api.expenses.security.SecurityUtils;
+import com.api.expenses.service.util.ExpensesDateUtil;
+import com.api.expenses.service.util.Pair;
 import com.api.expenses.util.Category;
 import com.api.expenses.web.rest.dto.DailyExpensesDto;
 import com.api.expenses.web.rest.dto.ExpenseDto;
+import com.api.expenses.web.rest.dto.MonthlyExpensesDto;
 import com.api.expenses.web.rest.dto.ThreeDaysExpensesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by roxana on 17.07.2016.
@@ -40,6 +40,43 @@ public class ExpenseService {
         List<Expense> expenses = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(now, user.get().getId());
 
         return getDailyExpensesDto(now, expenses);
+    }
+
+    public MonthlyExpensesDto getMonthlyExpenses() {
+        String userName = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
+        if (!user.isPresent()) {
+            throw new RuntimeException("User is not logged in");
+        }
+        Pair<String, String> firstLastDate = ExpensesDateUtil.getFirstLastDate();
+        List<Expense> expenses = expenseRepository.findByCreatedDateBetweenAndUserId(firstLastDate.getFirst(), firstLastDate.getSecond(), user.get().getId());
+        Map<String, List<ExpenseDto>> expensesMap = createExpenseMap(expenses);
+        return MonthlyExpensesDto
+            .builder()
+            .currentMonth(ZonedDateTime.now().getMonth().name())
+            .monthlyExpenses(expensesMap)
+            .build();
+    }
+
+    private Map<String, List<ExpenseDto>> createExpenseMap(List<Expense> expenses) {
+        Map<String, List<ExpenseDto>> expensesByDate = new TreeMap<>();
+        for(Expense expense : expenses) {
+            if(expensesByDate.get(expense.getCreatedDate()) == null) {
+                List<ExpenseDto> expenseDtos = new ArrayList<>();
+                expenseDtos.add(ExpenseDto.builder().id(expense.getId()).name(expense.getName()).category(expense.getCategory().getCategoryName())
+                    .description(expense.getDescription())
+                    .amount(expense.getAmount())
+                    .build());
+                expensesByDate.put(expense.getCreatedDate(), expenseDtos);
+            } else {
+                List<ExpenseDto> expenseDtos = expensesByDate.get(expense.getCreatedDate());
+                expenseDtos.add(ExpenseDto.builder().id(expense.getId()).name(expense.getName()).category(expense.getCategory().getCategoryName())
+                    .description(expense.getDescription())
+                    .amount(expense.getAmount())
+                    .build());
+            }
+        }
+        return expensesByDate;
     }
 
     private DailyExpensesDto getDailyExpensesDto(String now, List<Expense> expenses) {

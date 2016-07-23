@@ -11,5 +11,5 @@ import java.util.List;
 public interface ExpenseRepository extends MongoRepository<Expense, String> {
     List<Expense> findByCreatedDateAndUserIdOrderByAmountDesc(String date, String userId);
 
-    List<Expense> findByCreatedDateBetween(String startDate, String endDate);
+    List<Expense> findByCreatedDateBetweenAndUserId(String startDate, String endDate, String userId);
 }

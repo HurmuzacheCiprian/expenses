@@ -20,6 +20,7 @@ spring:
     data:
         mongodb:
             uri: mongodb://localhost:27017
+#            uri: mongodb://CloudFoundry_4r4thb9s_9qh8j68h_vii1805k:fPe5OkNLQuG-3iz2TkK-BkzueApfmPob@ds023475.mlab.com:23475/CloudFoundry_4r4thb9s_9qh8j68h
             database: expenses
     mail:
         host: localhost

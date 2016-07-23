@@ -6,13 +6,13 @@ import com.api.expenses.domain.User;
 import com.api.expenses.repository.ExpenseRepository;
 import com.api.expenses.repository.FundRepository;
 import com.api.expenses.security.SecurityUtils;
+import com.api.expenses.service.util.ExpensesDateUtil;
+import com.api.expenses.service.util.Pair;
 import com.api.expenses.web.rest.dto.FundDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,24 +37,9 @@ public class FundService {
             throw new RuntimeException("User is not logged in");
         }
         // this startDate and endDate should be tested better
-        String startDate = ZonedDateTime.now().minusDays(ZonedDateTime.now().getDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String endDate = ZonedDateTime.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        log.info("Finding expenses between {} and {}", startDate, endDate);
-        List<Expense> expenses = expenseRepository.findByCreatedDateBetween(startDate, endDate);
-        List<Fund> funds = fundRepository.findAllByUserId(user.get().getId());
-        Double amountExpenses = 0d;
-        Double amountFunds = 0d;
-
-        for (Expense e : expenses) {
-            amountExpenses += e.getAmount();
-        }
-
-        for (Fund f : funds) {
-            amountFunds += f.getAmount();
-        }
-
-
-        return FundDto.builder().name("Available funds").amount(amountFunds - amountExpenses).build();
+        Pair<String, String> firstLastDate = ExpensesDateUtil.getFirstLastDate();
+        log.info("Finding expenses between {} and {}", firstLastDate.getFirst(), firstLastDate.getSecond());
+        return getFundDto(user.get(), firstLastDate);
     }
 
     public boolean save(FundDto fundDto) {
@@ -94,4 +79,19 @@ public class FundService {
         }
         fundRepository.delete(fund);
     }
+
+    private FundDto getFundDto(User user, Pair<String, String> firstLastDate) {
+        List<Expense> expenses = expenseRepository.findByCreatedDateBetweenAndUserId(firstLastDate.getFirst(), firstLastDate.getSecond(), user.getId());
+        List<Fund> funds = fundRepository.findAllByUserId(user.getId());
+        Double amountExpenses = 0d;
+        Double amountFunds = 0d;
+        for (Expense e : expenses) {
+            amountExpenses += e.getAmount();
+        }
+        for (Fund f : funds) {
+            amountFunds += f.getAmount();
+        }
+        return FundDto.builder().name("Available funds").amount(amountFunds - amountExpenses).build();
+    }
+
 }

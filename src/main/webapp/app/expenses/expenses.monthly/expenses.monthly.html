@@ -1,5 +1,28 @@
 <div ng-cloak>
     <div class="row">
-        {{message}}
+        <div class="col-md-10">
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Your monthly expenses for {{currentMonth}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content ng-if="!emptyExpense">
+                    <div class="col-md-12">
+                        <div class="col-md-5 ex-expenses" ng-repeat = "(key, val) in expenses">
+                            <span>{{key}}</span>
+                            <div ng-repeat="exp in val">
+                                <span>{{exp.category}} - {{exp.amount}} RON</span>
+                            </div>
+                        </div>
+                    </div>
+                </md-card-content>
+                <md-card-content ng-if="emptyExpense">
+                    <div class="col-md-12 ex">
+                        <span class="label label-info">No expense found for {{currentMonth}}.</span>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
     </div>
 </div>

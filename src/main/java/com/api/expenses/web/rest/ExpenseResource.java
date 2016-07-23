@@ -3,6 +3,7 @@ package com.api.expenses.web.rest;
 import com.api.expenses.service.ExpenseService;
 import com.api.expenses.web.rest.dto.DailyExpensesDto;
 import com.api.expenses.web.rest.dto.ExpenseDto;
+import com.api.expenses.web.rest.dto.MonthlyExpensesDto;
 import com.api.expenses.web.rest.dto.ThreeDaysExpensesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,11 @@ public class ExpenseResource {
     public ResponseEntity remove(@RequestParam("expenseId") String expenseId) {
         expenseService.remove(expenseId);
         return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/monthly-expenses")
+    public ResponseEntity<MonthlyExpensesDto> getMonthlyExpenses() {
+        return new ResponseEntity<>(expenseService.getMonthlyExpenses(), HttpStatus.OK);
     }
 
 }
