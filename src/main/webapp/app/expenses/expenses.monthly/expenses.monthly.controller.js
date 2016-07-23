@@ -25,6 +25,10 @@
                 }, function (error) {
 
                 });
+            ExpensesMonthlyService.getMonthlyCategoryInfo()
+                .then(function (data) {
+                    $scope.categoryMonthlyInfo = data.data;
+                });
         }
 
     }

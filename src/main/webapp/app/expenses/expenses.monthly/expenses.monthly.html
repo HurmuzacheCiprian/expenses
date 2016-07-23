@@ -9,10 +9,17 @@
                 </md-card-title>
                 <md-card-content ng-if="!emptyExpense">
                     <div class="col-md-12">
-                        <div class="col-md-5 ex-expenses" ng-repeat = "(key, val) in expenses">
-                            <span>{{key}}</span>
-                            <div ng-repeat="exp in val">
-                                <span>{{exp.category}} - {{exp.amount}} RON</span>
+                        <div class="col-md-8 ex-expenses-left" style="margin-top: 30px; border-top: 1px solid black;" ng-repeat = "(key, val) in expenses">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top: 20px;">
+                                    <span class="label label-info" style="font-size: 16px;">{{key}}</span>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 35px;">
+                                <div class="col-md-4" style="margin-top: 10px;" ng-repeat="exp in val">
+                                    <span class="label label-success" style="font-size: 13px;">{{exp.category}}</span>
+                                    <span>{{exp.amount}} RON</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -20,6 +27,27 @@
                 <md-card-content ng-if="emptyExpense">
                     <div class="col-md-12 ex">
                         <span class="label label-info">No expense found for {{currentMonth}}.</span>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+        <div class="col-md-10">
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Expenses by category</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div class="col-md-12">
+                        <div class="col-md-7" ng-repeat="(key, val) in categoryMonthlyInfo" style="margin-bottom: 10px;">
+                            <div class="col-md-4">
+                                <span class="label label-success" style="font-size: 13px;">{{key}}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <span style="text-align:center;">{{val}} RON</span>
+                            </div>
+                        </div>
                     </div>
                 </md-card-content>
             </md-card>

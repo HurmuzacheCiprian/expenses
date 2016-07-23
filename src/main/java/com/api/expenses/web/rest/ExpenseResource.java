@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * Created by roxana on 17.07.2016.
  */
@@ -46,5 +48,11 @@ public class ExpenseResource {
     public ResponseEntity<MonthlyExpensesDto> getMonthlyExpenses() {
         return new ResponseEntity<>(expenseService.getMonthlyExpenses(), HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/monthly-categories-info")
+    public ResponseEntity<Map<String, Double>> getMonthlyCategoriesInfo() {
+        return new ResponseEntity<>(expenseService.getMonthlyCategoriesInfo(), HttpStatus.OK);
+    }
+
 
 }

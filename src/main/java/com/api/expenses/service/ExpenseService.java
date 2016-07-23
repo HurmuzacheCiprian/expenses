@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by roxana on 17.07.2016.
@@ -43,19 +44,49 @@ public class ExpenseService {
     }
 
     public MonthlyExpensesDto getMonthlyExpenses() {
-        String userName = SecurityUtils.getCurrentUserLogin();
-        Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
-        if (!user.isPresent()) {
-            throw new RuntimeException("User is not logged in");
-        }
-        Pair<String, String> firstLastDate = ExpensesDateUtil.getFirstLastDate();
-        List<Expense> expenses = expenseRepository.findByCreatedDateBetweenAndUserId(firstLastDate.getFirst(), firstLastDate.getSecond(), user.get().getId());
+        List<Expense> expenses = monthlyExpenses();
         Map<String, List<ExpenseDto>> expensesMap = createExpenseMap(expenses);
         return MonthlyExpensesDto
             .builder()
             .currentMonth(ZonedDateTime.now().getMonth().name())
             .monthlyExpenses(expensesMap)
             .build();
+    }
+
+    public Map<String, Double> getMonthlyCategoriesInfo() {
+        List<Expense> expenses = monthlyExpenses();
+        Map<String, Double> categoryExpensesAmount = new HashMap<>();
+        for(Expense expense : expenses) {
+            String currentCategory = expense.getCategory().getCategoryName();
+            if(categoryExpensesAmount.get(currentCategory) == null) {
+                categoryExpensesAmount.put(currentCategory, expense.getAmount());
+            } else {
+                Double amount = categoryExpensesAmount.get(currentCategory);
+                categoryExpensesAmount.put(currentCategory, amount + expense.getAmount());
+            }
+        }
+
+        for(Category category : Category.values()) {
+            categoryExpensesAmount.putIfAbsent(category.getCategoryName(), 0D);
+        }
+
+
+        return categoryExpensesAmount
+            .entrySet()
+            .stream()
+            .sorted((o1, o2) -> Double.compare(o2.getValue(),o1.getValue()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                (e1, e2) -> e1, HashMap::new));
+    }
+
+    private List<Expense> monthlyExpenses() {
+        String userName = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
+        if (!user.isPresent()) {
+            throw new RuntimeException("User is not logged in");
+        }
+        Pair<String, String> firstLastDate = ExpensesDateUtil.getFirstLastDate();
+        return expenseRepository.findByCreatedDateBetweenAndUserId(firstLastDate.getFirst(), firstLastDate.getSecond(), user.get().getId());
     }
 
     private Map<String, List<ExpenseDto>> createExpenseMap(List<Expense> expenses) {

@@ -459,6 +459,12 @@ Social Buttons
     text-align: center;
 }
 
+.ex-expenses-left {
+    margin-top: 10px;
+    margin-left: 3px;
+    padding: 3px;
+}
+
 .ex-total-expenses {
     margin-top: 50px;
 }
