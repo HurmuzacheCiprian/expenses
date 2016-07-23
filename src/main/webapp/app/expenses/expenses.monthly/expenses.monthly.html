@@ -9,19 +9,21 @@
                 </md-card-title>
                 <md-card-content ng-if="!emptyExpense">
                     <div class="col-md-12">
-                        <div class="col-md-8 ex-expenses-left" style="margin-top: 30px; border-top: 1px solid black;" ng-repeat = "(key, val) in expenses">
-                            <div class="row">
-                                <div class="col-md-12" style="margin-top: 20px;">
-                                    <span class="label label-info" style="font-size: 16px;">{{key}}</span>
+                        <md-card class="col-md-8 ex-expenses-left" style="margin-top: 30px" ng-repeat = "(key, val) in expenses">
+                            <md-card-content>
+                                <div class="row">
+                                    <div class="col-md-12" style="margin-top: 20px;">
+                                        <span class="label label-info" style="font-size: 16px;">{{key}}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row" style="margin-top: 35px;">
-                                <div class="col-md-4" style="margin-top: 10px;" ng-repeat="exp in val">
-                                    <span class="label label-success" style="font-size: 13px;">{{exp.category}}</span>
-                                    <span>{{exp.amount}} RON</span>
+                                <div class="row" style="margin-top: 35px;">
+                                    <div class="col-md-4" style="margin-top: 10px;" ng-repeat="exp in val">
+                                        <span class="label label-success" style="font-size: 13px;">{{exp.category}}</span>
+                                        <span>{{exp.amount}} RON</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </md-card-content>
+                        </md-card>
                     </div>
                 </md-card-content>
                 <md-card-content ng-if="emptyExpense">
