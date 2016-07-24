@@ -24,6 +24,7 @@ module.exports = function (config) {
         files: [
             // bower:js
             'src/main/webapp/bower_components/jquery/dist/jquery.js',
+            'src/main/webapp/bower_components/Chart.js/dist/Chart.js',
             'src/main/webapp/bower_components/messageformat/messageformat.js',
             'src/main/webapp/bower_components/json3/lib/json3.js',
             'src/main/webapp/bower_components/sockjs-client/dist/sockjs.js',
@@ -49,6 +50,7 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'src/main/webapp/bower_components/ngstorage/ngStorage.js',
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
+            'src/main/webapp/bower_components/angular-chart.js/dist/angular-chart.js',
             'src/main/webapp/bower_components/angular-material/angular-material.js',
             'src/main/webapp/bower_components/angular-material-data-table/dist/md-data-table.js',
             // endbower

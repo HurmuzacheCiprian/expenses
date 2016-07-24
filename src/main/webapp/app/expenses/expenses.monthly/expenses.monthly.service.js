@@ -10,7 +10,15 @@
     function ExpensesMonthlyService($http) {
         return {
             getMonthlyExpenses: getMonthlyExpenses,
-            getMonthlyCategoryInfo: getMonthlyCategoryInfo
+            getMonthlyCategoryInfo: getMonthlyCategoryInfo,
+            getCategories: getCategories
+        }
+
+        function getCategories() {
+            return $http({
+                url: '/categories',
+                method: 'GET'
+            });
         }
 
         function getMonthlyExpenses() {

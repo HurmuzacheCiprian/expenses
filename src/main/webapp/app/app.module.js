@@ -18,7 +18,8 @@
             // jhipster-needle-angularjs-add-module JHipster will add new module here
             'angular-loading-bar',
             'ngMaterial',
-            'md.data.table'
+            'md.data.table',
+            'chart.js'
         ])
         .run(run);
 
