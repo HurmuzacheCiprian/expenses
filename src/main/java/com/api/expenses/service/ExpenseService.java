@@ -7,13 +7,12 @@ import com.api.expenses.security.SecurityUtils;
 import com.api.expenses.service.util.ExpensesDateUtil;
 import com.api.expenses.service.util.Pair;
 import com.api.expenses.util.Category;
-import com.api.expenses.web.rest.dto.DailyExpensesDto;
-import com.api.expenses.web.rest.dto.ExpenseDto;
-import com.api.expenses.web.rest.dto.MonthlyExpensesDto;
-import com.api.expenses.web.rest.dto.ThreeDaysExpensesDto;
+import com.api.expenses.web.rest.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Month;
+import java.time.YearMonth;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -41,6 +40,25 @@ public class ExpenseService {
         List<Expense> expenses = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(now, user.get().getId());
 
         return getDailyExpensesDto(now, expenses);
+    }
+
+    public YearlyExpensesDto getYearlyExpenses() {
+        String userName = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
+        if (!user.isPresent()) {
+            throw new RuntimeException("User is not logged in");
+        }
+        Map<Month, List<ExpenseDto>> yearlyExpenses = new HashMap<>();
+        for(Month month : Month.values()) {
+            Pair<String, String> firstEndDate = getFirstEndDayOfMonth(month);
+            List<Expense> expenses = expenseRepository.getYearlyExpenses(firstEndDate.getFirst(), firstEndDate.getSecond(), user.get().getId());
+            List<ExpenseDto> expenseDto = expenses.stream()
+                .map( e -> ExpenseDto.builder().id(e.getId()).description(e.getDescription()).name(e.getName()).amount(e.getAmount()).category(e.getCategory().getCategoryName()).build())
+                .collect(Collectors.toList());
+            yearlyExpenses.put(month, expenseDto);
+        }
+
+        return YearlyExpensesDto.builder().yearlyExpenses(yearlyExpenses).build();
     }
 
     public MonthlyExpensesDto getMonthlyExpenses() {
@@ -178,5 +196,11 @@ public class ExpenseService {
             throw new RuntimeException("Exception not found");
         }
         expenseRepository.delete(expense);
+    }
+
+    private Pair<String, String> getFirstEndDayOfMonth(Month month) {
+        String startDate = month.adjustInto(YearMonth.now()) + "-01";
+        String endDate = month.adjustInto(YearMonth.now()) + "-" + month.maxLength();
+        return new Pair(startDate, endDate);
     }
 }

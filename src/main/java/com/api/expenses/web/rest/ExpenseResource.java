@@ -1,10 +1,7 @@
 package com.api.expenses.web.rest;
 
 import com.api.expenses.service.ExpenseService;
-import com.api.expenses.web.rest.dto.DailyExpensesDto;
-import com.api.expenses.web.rest.dto.ExpenseDto;
-import com.api.expenses.web.rest.dto.MonthlyExpensesDto;
-import com.api.expenses.web.rest.dto.ThreeDaysExpensesDto;
+import com.api.expenses.web.rest.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +49,11 @@ public class ExpenseResource {
     @RequestMapping(method = RequestMethod.GET, value = "/monthly-categories-info")
     public ResponseEntity<Map<String, Double>> getMonthlyCategoriesInfo() {
         return new ResponseEntity<>(expenseService.getMonthlyCategoriesInfo(), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/yearly-expenses")
+    public ResponseEntity<YearlyExpensesDto> getYearlyExpenses() {
+        return new ResponseEntity<>(expenseService.getYearlyExpenses(), HttpStatus.OK);
     }
 
 

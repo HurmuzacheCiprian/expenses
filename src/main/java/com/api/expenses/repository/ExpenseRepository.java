@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by roxana on 17.07.2016.
  */
-public interface ExpenseRepository extends MongoRepository<Expense, String> {
+public interface ExpenseRepository extends MongoRepository<Expense, String>, CustomExpenseRepository {
     List<Expense> findByCreatedDateAndUserIdOrderByAmountDesc(String date, String userId);
 
     List<Expense> findByCreatedDateBetweenAndUserId(String startDate, String endDate, String userId);

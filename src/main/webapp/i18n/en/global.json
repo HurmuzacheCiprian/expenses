@@ -15,6 +15,9 @@
             "monthly": {
                 "expenses": "Monthly expenses"
             },
+            "yearly": {
+                "expenses": "Yearly expenses"
+            },
             "account": {
                 "main": "Account",
                 "settings": "Settings",
