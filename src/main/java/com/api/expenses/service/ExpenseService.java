@@ -17,6 +17,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by roxana on 17.07.2016.
@@ -48,14 +49,40 @@ public class ExpenseService {
         if (!user.isPresent()) {
             throw new RuntimeException("User is not logged in");
         }
-        Map<Month, List<ExpenseDto>> yearlyExpenses = new HashMap<>();
+        Map<Month, ExpensesChartDto> yearlyExpenses = new TreeMap<>();
+        List<String> categories = Stream.of(Category.values()).map(Category::getCategoryName).collect(Collectors.toList());
+
         for(Month month : Month.values()) {
             Pair<String, String> firstEndDate = getFirstEndDayOfMonth(month);
-            List<Expense> expenses = expenseRepository.getYearlyExpenses(firstEndDate.getFirst(), firstEndDate.getSecond(), user.get().getId());
-            List<ExpenseDto> expenseDto = expenses.stream()
-                .map( e -> ExpenseDto.builder().id(e.getId()).description(e.getDescription()).name(e.getName()).amount(e.getAmount()).category(e.getCategory().getCategoryName()).build())
-                .collect(Collectors.toList());
-            yearlyExpenses.put(month, expenseDto);
+            List<Expense> expenses = expenseRepository.findByFilters(firstEndDate.getFirst(), firstEndDate.getSecond(), user.get().getId());
+            List<MonthlyCategoryDto> categoryDtos = new LinkedList<>();
+            for(Expense expense : expenses) {
+                MonthlyCategoryDto obj = MonthlyCategoryDto.builder().category(expense.getCategory().getCategoryName()).build();
+                if(categoryDtos.contains(obj)) {
+                    List<Double> amounts = categoryDtos.get(categoryDtos.indexOf(obj)).getAmount();
+                    if(amounts == null || amounts.isEmpty()) {
+                        List<Double> ll = new LinkedList<>();
+                        ll.add(expense.getAmount());
+                        obj.setAmount(ll);
+                    } else {
+                        amounts.add(expense.getAmount());
+                    }
+                } else {
+                    List<Double> am = new LinkedList<>();
+                    am.add(expense.getAmount());
+                    obj.setAmount(am);
+                    categoryDtos.add(obj);
+                }
+            }
+
+            for(String category : categories) {
+                MonthlyCategoryDto obj = MonthlyCategoryDto.builder().category(category).build();
+                if(!categoryDtos.contains(obj)) {
+                    categoryDtos.add(obj);
+                }
+            }
+
+            yearlyExpenses.put(month, ExpensesChartDto.builder().categoryInfo(categoryDtos).categoryInfo(categoryDtos).build());
         }
 
         return YearlyExpensesDto.builder().yearlyExpenses(yearlyExpenses).build();

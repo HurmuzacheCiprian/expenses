@@ -5,11 +5,26 @@
         .module('expensesApp')
         .controller('ExpensesYearlyController',ExpensesYearlyController);
 
-    ExpensesYearlyController.$inject = ['$scope'];
+    ExpensesYearlyController.$inject = ['$scope','ExpensesYearlyService'];
 
+    function ExpensesYearlyController($scope,ExpensesYearlyService) {
+        var vm = this;
 
-    function ExpensesYearlyController($scope) {
-        $scope.message = 'Yearly expenses';
+        $scope.yearlyExpenses = [];
+
+        vm.init = init;
+
+        vm.init();
+
+        function init() {
+            ExpensesYearlyService.getYearlyExpenses()
+                .then(function (data) {
+                    $scope.yearlyExpenses = data.data.yearlyExpenses;
+                    console.log($scope.yearlyExpenses);
+                }, function (error) {
+                    console.log(error);
+                });
+        }
     }
 
 

@@ -1,5 +1,20 @@
 <div ng-cloak>
-    <div class="row">
-        {{message}}
+    <div class="row" ng-repeat="(key, val) in yearlyExpenses">
+        <md-card>
+            <md-card-title>
+                {{key}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8" ng-repeat="exp in val">
+                    <!--{{val}}-->
+                    <canvas id="bar" class="chart chart-bar"
+                            chart-data="data" chart-labels="val.categoryInfo" chart-series="series">
+                    </canvas>
+
+                    {{val.categoryInfo}}
+                    <span>{{exp.category}} - {{exp.amount}}</span>
+                </div>
+            </md-card-content>
+        </md-card>
     </div>
 </div>
