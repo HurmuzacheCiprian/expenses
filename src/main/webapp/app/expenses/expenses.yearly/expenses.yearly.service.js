@@ -9,8 +9,23 @@
 
     function ExpensesYearlyService($http) {
         return {
-            getYearlyExpenses: getYearlyExpenses,
-            getCategories: getCategories
+            getCategories: getCategories,
+            getMonths: getMonths,
+            getSpecificMonthExpense: getSpecificMonthExpense
+        }
+
+        function getSpecificMonthExpense(month) {
+            return $http({
+                url: '/expenses/month-expenses?month='+month,
+                method: 'GET'
+            });
+        }
+
+        function getMonths() {
+            return $http({
+                url: '/categories/months',
+                method: 'GET'
+            });
         }
 
         function getCategories() {
@@ -20,12 +35,6 @@
             });
         }
 
-        function getYearlyExpenses() {
-            return $http({
-                url: '/expenses/yearly-expenses',
-                method: 'GET'
-            });
-        }
 
     }
 

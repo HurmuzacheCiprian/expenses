@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Month;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,6 +22,14 @@ public class CategoryResource {
             .map(Category::getCategoryName)
             .sorted()
             .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/months")
+    public ResponseEntity<List<Month>> getMonths() {
+        return new ResponseEntity<>(
+            Stream.of(Month.values())
+            .collect(Collectors.toList())
+            , HttpStatus.OK);
     }
 
 

@@ -1,18 +1,260 @@
 <div ng-cloak>
-    <div class="row" ng-repeat="month in months">
+    <div class="row">
         <md-card>
             <md-card-title>
-                {{month}} {{val}}
+                {{months[0]}}
             </md-card-title>
             <md-card-content>
                 <div class="col-md-8">
                     <!--{{val}}-->
-                    <canvas id="bar" class="chart chart-bar"
-                            chart-data="getData(month)" chart-labels="categories">
+                    <canvas id="bar0" class="chart chart-bar"
+                            chart-data="dataJanuary" chart-labels="categories">
                     </canvas>
 
-                    <span>{{exp.category}} - {{exp.amount}}</span>
                 </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataJanuaryTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[1]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar1" class="chart chart-bar"
+                            chart-data="dataFebruary" chart-labels="categories">
+                    </canvas>
+
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataFebruaryTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[2]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar2" class="chart chart-bar"
+                            chart-data="dataMarch" chart-labels="categories">
+                    </canvas>
+
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataMarchTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[3]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar3" class="chart chart-bar"
+                            chart-data="dataApril" chart-labels="categories">
+                    </canvas>
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataAprilTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[4]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar4" class="chart chart-bar"
+                            chart-data="dataMay" chart-labels="categories">
+                    </canvas>
+
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataMayTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[5]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar5" class="chart chart-bar"
+                            chart-data="dataJune" chart-labels="categories">
+                    </canvas>
+
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataJuneTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[6]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar6" class="chart chart-bar"
+                            chart-data="dataJuly" chart-labels="categories">
+                    </canvas>
+
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataJulyTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[7]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar7" class="chart chart-bar"
+                            chart-data="dataAugust" chart-labels="categories">
+                    </canvas>
+
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataAugustTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[8]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar8" class="chart chart-bar"
+                            chart-data="dataSeptember" chart-labels="categories">
+                    </canvas>
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataSeptemberTotal}} RON</span>
+                </div>
+
+
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[9]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar9" class="chart chart-bar"
+                            chart-data="dataOctober" chart-labels="categories">
+                    </canvas>
+
+                    <div class="col-md-8">
+                        <span class="label label-success">Total spent: {{dataOctoberTotal}} RON</span>
+                    </div>
+
+
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[10]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar10" class="chart chart-bar"
+                            chart-data="dataNovember" chart-labels="categories">
+                    </canvas>
+
+                    <div class="col-md-8">
+                        <span class="label label-success">Total spent: {{dataNovemberTotal}} RON</span>
+                    </div>
+
+
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="row">
+        <md-card>
+            <md-card-title>
+                {{months[11]}} {{val}}
+            </md-card-title>
+            <md-card-content>
+                <div class="col-md-8">
+                    <!--{{val}}-->
+                    <canvas id="bar11" class="chart chart-bar"
+                            chart-data="dataDecember" chart-labels="categories">
+                    </canvas>
+                </div>
+
+                <div class="col-md-8">
+                    <span class="label label-success">Total spent: {{dataDecemberTotal}} RON</span>
+                </div>
+
+
             </md-card-content>
         </md-card>
     </div>

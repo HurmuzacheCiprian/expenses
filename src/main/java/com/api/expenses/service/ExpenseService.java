@@ -8,6 +8,7 @@ import com.api.expenses.service.util.ExpensesDateUtil;
 import com.api.expenses.service.util.Pair;
 import com.api.expenses.util.Category;
 import com.api.expenses.web.rest.dto.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-/**
- * Created by roxana on 17.07.2016.
- */
 @Service
+@Slf4j
 public class ExpenseService {
 
     @Autowired
@@ -41,40 +39,6 @@ public class ExpenseService {
         List<Expense> expenses = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(now, user.get().getId());
 
         return getDailyExpensesDto(now, expenses);
-    }
-
-    public YearlyExpensesDto getYearlyExpenses() {
-        String userName = SecurityUtils.getCurrentUserLogin();
-        Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
-        if (!user.isPresent()) {
-            throw new RuntimeException("User is not logged in");
-        }
-        Map<Month, Map<String, Double>> yearlyExpenses = new TreeMap<>();
-        List<String> categories = Stream.of(Category.values()).map(Category::getCategoryName).collect(Collectors.toList());
-
-        for(Month month : Month.values()) {
-            Pair<String, String> firstEndDate = getFirstEndDayOfMonth(month);
-            List<Expense> expenses = expenseRepository.findByFilters(firstEndDate.getFirst(), firstEndDate.getSecond(), user.get().getId());
-            Map<String, Double> monthlyExpenses = new TreeMap<>();
-            yearlyExpenses.put(month, monthlyExpenses);
-
-            for(Expense expense : expenses) {
-                String categoryName = expense.getCategory().getCategoryName();
-                if(monthlyExpenses.get(categoryName) == null) {
-                    monthlyExpenses.put(categoryName, expense.getAmount());
-                } else {
-                    Double amount = monthlyExpenses.get(categoryName);
-                    monthlyExpenses.put(categoryName, amount + expense.getAmount());
-                }
-            }
-
-            for(Category category : Category.values()) {
-                monthlyExpenses.putIfAbsent(category.getCategoryName(), 0D);
-            }
-
-        }
-
-        return YearlyExpensesDto.builder().yearlyExpenses(yearlyExpenses).build();
     }
 
     public MonthlyExpensesDto getMonthlyExpenses() {
@@ -218,5 +182,35 @@ public class ExpenseService {
         String startDate = month.adjustInto(YearMonth.now()) + "-01";
         String endDate = month.adjustInto(YearMonth.now()) + "-" + month.maxLength();
         return new Pair(startDate, endDate);
+    }
+
+    public SpecificMonthExpenseDto getSpecificMonthExpenses(Month month) {
+        String userName = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
+        if (!user.isPresent()) {
+            throw new RuntimeException("User is not logged in");
+        }
+
+        Pair<String, String> firstEndDate = getFirstEndDayOfMonth(month);
+        List<Expense> expenses = expenseRepository.findByFilters(firstEndDate.getFirst(), firstEndDate.getSecond(), user.get().getId());
+
+        Map<String, Double> expensesByCategory = new TreeMap<>();
+        Double totalAmount = 0D;
+        for(Expense expense : expenses) {
+            String categoryName = expense.getCategory().getCategoryName();
+            if(expensesByCategory.get(categoryName) == null) {
+                expensesByCategory.put(categoryName, expense.getAmount());
+            } else {
+                Double amount = expensesByCategory.get(categoryName);
+                expensesByCategory.put(categoryName, amount + expense.getAmount());
+            }
+            totalAmount += expense.getAmount();
+        }
+
+        for(Category category : Category.values()) {
+            expensesByCategory.putIfAbsent(category.getCategoryName(), 0D);
+        }
+
+        return SpecificMonthExpenseDto.builder().total(totalAmount).amount(expensesByCategory.values()).build();
     }
 }
