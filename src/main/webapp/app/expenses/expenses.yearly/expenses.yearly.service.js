@@ -9,7 +9,15 @@
 
     function ExpensesYearlyService($http) {
         return {
-            getYearlyExpenses: getYearlyExpenses
+            getYearlyExpenses: getYearlyExpenses,
+            getCategories: getCategories
+        }
+
+        function getCategories() {
+            return $http({
+                url: '/categories',
+                method: 'GET'
+            });
         }
 
         function getYearlyExpenses() {

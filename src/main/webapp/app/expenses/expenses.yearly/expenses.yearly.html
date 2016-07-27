@@ -1,17 +1,16 @@
 <div ng-cloak>
-    <div class="row" ng-repeat="(key, val) in yearlyExpenses">
+    <div class="row" ng-repeat="month in months">
         <md-card>
             <md-card-title>
-                {{key}}
+                {{month}} {{val}}
             </md-card-title>
             <md-card-content>
-                <div class="col-md-8" ng-repeat="exp in val">
+                <div class="col-md-8">
                     <!--{{val}}-->
                     <canvas id="bar" class="chart chart-bar"
-                            chart-data="data" chart-labels="val.categoryInfo" chart-series="series">
+                            chart-data="getData(month)" chart-labels="categories">
                     </canvas>
 
-                    {{val.categoryInfo}}
                     <span>{{exp.category}} - {{exp.amount}}</span>
                 </div>
             </md-card-content>

@@ -11,5 +11,5 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class YearlyExpensesDto {
-    private Map<Month, ExpensesChartDto> yearlyExpenses;
+    private Map<Month, Map<String, Double>> yearlyExpenses;
 }

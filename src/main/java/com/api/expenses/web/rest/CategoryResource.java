@@ -17,7 +17,10 @@ public class CategoryResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<String>> getCategories() {
-        return new ResponseEntity<>(Stream.of(Category.values()).map(Category::getCategoryName).collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(Stream.of(Category.values())
+            .map(Category::getCategoryName)
+            .sorted()
+            .collect(Collectors.toList()), HttpStatus.OK);
     }
 
 
