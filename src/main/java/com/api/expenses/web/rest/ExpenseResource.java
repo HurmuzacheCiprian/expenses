@@ -5,6 +5,7 @@ import com.api.expenses.web.rest.dto.DailyExpensesDto;
 import com.api.expenses.web.rest.dto.ExpenseDto;
 import com.api.expenses.web.rest.dto.MonthlyExpensesDto;
 import com.api.expenses.web.rest.dto.ThreeDaysExpensesDto;
+import com.codahale.metrics.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class ExpenseResource {
     @Autowired
     private ExpenseService expenseService;
 
+    @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DailyExpensesDto> getDailyExpenses() {
         return new ResponseEntity<>(expenseService.getDailyExpenses(), HttpStatus.OK);
@@ -37,6 +39,11 @@ public class ExpenseResource {
     public ResponseEntity registerExpense(@RequestBody ExpenseDto expenseDto) {
         expenseService.register(expenseDto);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/daily-limit")
+    public ResponseEntity registerDailyExpenseLimit() {
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
