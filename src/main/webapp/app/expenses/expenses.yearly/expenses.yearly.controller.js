@@ -138,7 +138,6 @@
             ExpensesYearlyService.getSpecificMonthExpense('JANUARY')
                 .then(function (data) {
                    $scope.dataJanuary = data.data.amount;
-                   console.log($scope.dataJanuary);
                     $scope.dataJanuaryTotal = data.data.total;
                 });
         }
@@ -147,7 +146,6 @@
             ExpensesYearlyService.getSpecificMonthExpense('JULY')
                 .then(function (data) {
                    $scope.dataJuly = data.data.amount;
-                   console.log($scope.dataJuly);
                    $scope.dataJulyTotal = data.data.total;
             });
         }
@@ -162,10 +160,6 @@
                 .then(function (data) {
                     $scope.months = data.data;
             });
-
         }
-
     }
-
-
 })();
