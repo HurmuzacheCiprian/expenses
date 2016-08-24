@@ -20,7 +20,6 @@
         $scope.totalExpenses = null;
         $scope.registerLimit = registerLimit;
         $scope.remove = remove;
-        $scope.message = "Ordonate dup pret descrescator si grupate dupa categorie";
         var vm = this;
         vm.init = init;
 
