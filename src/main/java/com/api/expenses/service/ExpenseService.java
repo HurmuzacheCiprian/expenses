@@ -7,13 +7,15 @@ import com.api.expenses.security.SecurityUtils;
 import com.api.expenses.service.util.ExpensesDateUtil;
 import com.api.expenses.service.util.Pair;
 import com.api.expenses.util.Category;
+import com.api.expenses.util.MonthUtil;
+import com.api.expenses.validation.UserValidator;
+import com.api.expenses.validation.Validator;
 import com.api.expenses.web.rest.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Month;
-import java.time.YearMonth;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -29,12 +31,12 @@ public class ExpenseService {
     @Autowired
     private UserService userService;
 
+    private final Validator userValidator = new UserValidator();
+
     public DailyExpensesDto getDailyExpenses() {
         String userName = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
-        if (!user.isPresent()) {
-            throw new RuntimeException("User is not logged in");
-        }
+        userValidator.validate(user);
         String now = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         List<Expense> expenses = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(now, user.get().getId());
 
@@ -54,9 +56,9 @@ public class ExpenseService {
     public Map<String, Double> getMonthlyCategoriesInfo() {
         List<Expense> expenses = monthlyExpenses();
         Map<String, Double> categoryExpensesAmount = new HashMap<>();
-        for(Expense expense : expenses) {
+        for (Expense expense : expenses) {
             String currentCategory = expense.getCategory().getCategoryName();
-            if(categoryExpensesAmount.get(currentCategory) == null) {
+            if (categoryExpensesAmount.get(currentCategory) == null) {
                 categoryExpensesAmount.put(currentCategory, expense.getAmount());
             } else {
                 Double amount = categoryExpensesAmount.get(currentCategory);
@@ -64,7 +66,7 @@ public class ExpenseService {
             }
         }
 
-        for(Category category : Category.values()) {
+        for (Category category : Category.values()) {
             categoryExpensesAmount.putIfAbsent(category.getCategoryName(), 0D);
         }
 
@@ -72,7 +74,7 @@ public class ExpenseService {
         return categoryExpensesAmount
             .entrySet()
             .stream()
-            .sorted((o1, o2) -> Double.compare(o2.getValue(),o1.getValue()))
+            .sorted((o1, o2) -> Double.compare(o2.getValue(), o1.getValue()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                 (e1, e2) -> e1, HashMap::new));
     }
@@ -80,17 +82,15 @@ public class ExpenseService {
     private List<Expense> monthlyExpenses() {
         String userName = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
-        if (!user.isPresent()) {
-            throw new RuntimeException("User is not logged in");
-        }
+        userValidator.validate(user);
         Pair<String, String> firstLastDate = ExpensesDateUtil.getFirstLastDate();
         return expenseRepository.findByCreatedDateBetweenAndUserId(firstLastDate.getFirst(), firstLastDate.getSecond(), user.get().getId());
     }
 
     private Map<String, List<ExpenseDto>> createExpenseMap(List<Expense> expenses) {
         Map<String, List<ExpenseDto>> expensesByDate = new TreeMap<>();
-        for(Expense expense : expenses) {
-            if(expensesByDate.get(expense.getCreatedDate()) == null) {
+        for (Expense expense : expenses) {
+            if (expensesByDate.get(expense.getCreatedDate()) == null) {
                 List<ExpenseDto> expenseDtos = new ArrayList<>();
                 expenseDtos.add(ExpenseDto.builder().id(expense.getId()).name(expense.getName()).category(expense.getCategory().getCategoryName())
                     .description(expense.getDescription())
@@ -127,27 +127,17 @@ public class ExpenseService {
     public ThreeDaysExpensesDto getLastThreeDaysExpenses() {
         String userName = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
-        if (!user.isPresent()) {
-            throw new RuntimeException("User is not logged in");
-        }
+        userValidator.validate(user);
         ZonedDateTime now = ZonedDateTime.now();
-        String day_3 = now.minusDays(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String day_2 = now.minusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String day_1 = now.minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         ThreeDaysExpensesDto response = new ThreeDaysExpensesDto();
-
-        List<Expense> expenses_day_3 = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(day_3, user.get().getId());
-        List<Expense> expenses_day_2 = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(day_2, user.get().getId());
-        List<Expense> expenses_day_1 = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(day_1, user.get().getId());
-
-        DailyExpensesDto dto_day_3 = getDailyExpensesDto(day_3, expenses_day_3);
-        DailyExpensesDto dto_day_2 = getDailyExpensesDto(day_2, expenses_day_2);
-        DailyExpensesDto dto_day_1 = getDailyExpensesDto(day_1, expenses_day_1);
         List<DailyExpensesDto> dailyExpenses = new LinkedList<>();
-        dailyExpenses.add(dto_day_1);
-        dailyExpenses.add(dto_day_2);
-        dailyExpenses.add(dto_day_3);
 
+        for (int i = 1; i <= 3; i++) {
+            String day = now.minusDays(i).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            List<Expense> expensesForDay = expenseRepository.findByCreatedDateAndUserIdOrderByAmountDesc(day, user.get().getId());
+            DailyExpensesDto expensesDto = getDailyExpensesDto(day, expensesForDay);
+            dailyExpenses.add(expensesDto);
+        }
         response.setDailyExpensesDto(dailyExpenses);
 
         return response;
@@ -157,9 +147,7 @@ public class ExpenseService {
         String userName = SecurityUtils.getCurrentUserLogin();
         String now = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
-        if (!user.isPresent()) {
-            throw new RuntimeException("User is not logged in");
-        }
+        userValidator.validate(user);
         Expense expense = new Expense();
         expense.setAmount(expenseDto.getAmount());
         expense.setCategory(Category.getCategory(expenseDto.getCategory()).get());
@@ -178,27 +166,19 @@ public class ExpenseService {
         expenseRepository.delete(expense);
     }
 
-    private Pair<String, String> getFirstEndDayOfMonth(Month month) {
-        String startDate = month.adjustInto(YearMonth.now()) + "-01";
-        String endDate = month.adjustInto(YearMonth.now()) + "-" + month.maxLength();
-        return new Pair(startDate, endDate);
-    }
-
     public SpecificMonthExpenseDto getSpecificMonthExpenses(Month month) {
         String userName = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userService.getUserWithAuthoritiesByLogin(userName);
-        if (!user.isPresent()) {
-            throw new RuntimeException("User is not logged in");
-        }
+        userValidator.validate(user);
 
-        Pair<String, String> firstEndDate = getFirstEndDayOfMonth(month);
+        Pair<String, String> firstEndDate = MonthUtil.getFirstEndDayOfMonth(month);
         List<Expense> expenses = expenseRepository.findByFilters(firstEndDate.getFirst(), firstEndDate.getSecond(), user.get().getId());
 
         Map<String, Double> expensesByCategory = new TreeMap<>();
         Double totalAmount = 0D;
-        for(Expense expense : expenses) {
+        for (Expense expense : expenses) {
             String categoryName = expense.getCategory().getCategoryName();
-            if(expensesByCategory.get(categoryName) == null) {
+            if (expensesByCategory.get(categoryName) == null) {
                 expensesByCategory.put(categoryName, expense.getAmount());
             } else {
                 Double amount = expensesByCategory.get(categoryName);
@@ -207,7 +187,7 @@ public class ExpenseService {
             totalAmount += expense.getAmount();
         }
 
-        for(Category category : Category.values()) {
+        for (Category category : Category.values()) {
             expensesByCategory.putIfAbsent(category.getCategoryName(), 0D);
         }
 
